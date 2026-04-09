@@ -1,295 +1,389 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PayDirect — Pagos A2A para el comercio chileno</title>
-  <meta name="description" content="Pagos A2A instantáneos para tu comercio. Sin terminales, sin arriendo mensual. El dinero va directo a tu cuenta.">
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Segoe UI', Arial, sans-serif; background:#060F1A; color:#E8F1F8; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PayDirect — Pagos A2A instantáneos para el comercio chileno</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#08090a;
+  --white:#f2f1ed;
+  --green:#00e87a;
+  --green-dim:rgba(0,232,122,0.08);
+  --green-border:rgba(0,232,122,0.18);
+  --card:#0f1210;
+  --card2:#131614;
+  --gray:rgba(242,241,237,0.45);
+  --gray2:rgba(242,241,237,0.22);
+  --gray3:rgba(242,241,237,0.08);
+  --border:rgba(255,255,255,0.07);
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden;cursor:none}
 
-    /* NAV */
-    .nav { background:#060F1A; border-bottom:1px solid #0D2540; padding:0 40px; display:flex; align-items:center; justify-content:space-between; height:64px; position:sticky; top:0; z-index:100; }
-    .nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
-    .logo-icon { width:36px; height:36px; background:#00C896; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-    .logo-icon svg { width:20px; height:20px; }
-    .logo-text { font-size:20px; font-weight:900; letter-spacing:-0.5px; color:#FFFFFF; }
-    .logo-text span { color:#00C896; }
-    .nav-links { display:flex; gap:28px; }
-    .nav-links a { font-size:13px; color:#6B8BA4; text-decoration:none; transition:color .15s; }
-    .nav-links a:hover { color:#E8F1F8; }
-    .nav-cta { background:#00C896; color:#060F1A; font-size:13px; font-weight:700; padding:8px 20px; border-radius:8px; border:none; cursor:pointer; transition:opacity .15s; }
-    .nav-cta:hover { opacity:0.88; }
+/* cursor */
+#cur{width:9px;height:9px;background:var(--green);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;mix-blend-mode:difference;transition:transform .15s}
+#cur-r{width:34px;height:34px;border:1px solid rgba(0,232,122,0.35);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transition:left .1s,top .1s,border-color .2s,transform .2s}
 
-    /* HERO */
-    .hero { padding:80px 40px 60px; max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
-    .hero-badge { display:inline-flex; align-items:center; gap:6px; background:#0D2540; border:1px solid #0D4A3A; color:#00C896; font-size:12px; font-weight:600; padding:5px 12px; border-radius:20px; margin-bottom:20px; letter-spacing:0.5px; }
-    .hero-badge-dot { width:6px; height:6px; background:#00C896; border-radius:50%; }
-    .hero h1 { font-size:46px; font-weight:900; line-height:1.1; letter-spacing:-1.5px; margin-bottom:20px; }
-    .hero h1 em { font-style:normal; color:#00C896; }
-    .hero-sub { font-size:16px; color:#6B8BA4; line-height:1.7; margin-bottom:32px; max-width:440px; }
-    .hero-btns { display:flex; gap:12px; flex-wrap:wrap; }
-    .btn-primary { background:#00C896; color:#060F1A; font-size:14px; font-weight:700; padding:12px 28px; border-radius:10px; border:none; cursor:pointer; transition:opacity .15s; }
-    .btn-primary:hover { opacity:0.88; }
-    .btn-secondary { background:transparent; color:#E8F1F8; font-size:14px; padding:12px 28px; border-radius:10px; border:1px solid #1A3A5C; cursor:pointer; transition:border-color .15s; }
-    .btn-secondary:hover { border-color:#00C896; }
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 48px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(8,9,10,0.88);backdrop-filter:blur(14px)}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:21px;letter-spacing:-.5px;color:var(--white);text-decoration:none}
+.logo span{color:var(--green)}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{font-size:13px;color:var(--gray);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--white)}
+.nav-pill{background:var(--green);color:#000;border:none;padding:9px 20px;border-radius:100px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:13px;cursor:none;transition:all .2s;text-decoration:none}
+.nav-pill:hover{background:#fff;transform:scale(1.04)}
 
-    /* HERO CARD */
-    .hero-card { background:#0A1828; border:1px solid #0D2540; border-radius:20px; padding:28px; }
-    .hc-title { font-size:12px; color:#4A7A9B; font-weight:600; letter-spacing:1px; margin-bottom:20px; }
-    .hc-flow { display:flex; align-items:center; gap:8px; margin-bottom:24px; }
-    .hc-node { flex:1; background:#0D1F35; border-radius:10px; padding:12px; text-align:center; }
-    .hc-node-label { font-size:11px; color:#4A7A9B; margin-bottom:4px; }
-    .hc-node-val { font-size:13px; font-weight:700; color:#E8F1F8; }
-    .hc-node.accent { background:#0D3A2A; border:1px solid #0D4A3A; }
-    .hc-node.accent .hc-node-val { color:#00C896; }
-    .hc-arrow { color:#00C896; font-size:20px; flex-shrink:0; }
-    .hc-stats { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
-    .hc-stat { background:#0D1F35; border-radius:10px; padding:12px; text-align:center; }
-    .hc-stat-val { font-size:22px; font-weight:900; color:#00C896; }
-    .hc-stat-lbl { font-size:10px; color:#4A7A9B; margin-top:3px; }
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:130px 48px 90px;position:relative;overflow:hidden}
+.hero-glow{position:absolute;inset:0;background:radial-gradient(ellipse 55% 60% at 72% 38%,rgba(0,232,122,0.065) 0%,transparent 65%),radial-gradient(ellipse 35% 50% at 15% 85%,rgba(0,180,100,0.04) 0%,transparent 60%);pointer-events:none}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.022) 1px,transparent 1px);background-size:56px 56px;pointer-events:none;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,#000,transparent)}
 
-    /* BANKS STRIP */
-    .strip { background:#00C896; padding:14px 40px; display:flex; justify-content:center; gap:40px; flex-wrap:wrap; }
-    .strip-item { font-size:13px; font-weight:700; color:#060F1A; display:flex; align-items:center; gap:6px; }
-    .strip-dot { width:5px; height:5px; background:#060F1A; border-radius:50%; opacity:0.35; }
+.badge{display:inline-flex;align-items:center;gap:7px;background:var(--green-dim);border:1px solid var(--green-border);color:var(--green);font-size:11px;font-weight:500;padding:5px 13px;border-radius:100px;margin-bottom:30px;width:fit-content;letter-spacing:.06em;text-transform:uppercase;animation:fu .7s ease both}
+.badge-dot{width:5px;height:5px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4;transform:scale(.7)}}
 
-    /* SECTIONS */
-    .section { padding:80px 40px; max-width:1100px; margin:0 auto; }
-    .section-label { font-size:11px; font-weight:700; color:#00C896; letter-spacing:2px; margin-bottom:10px; }
-    .section-title { font-size:34px; font-weight:900; letter-spacing:-1px; margin-bottom:14px; line-height:1.15; }
-    .section-sub { font-size:15px; color:#6B8BA4; max-width:520px; line-height:1.7; margin-bottom:52px; }
+h1.hero-h{font-family:'Syne',sans-serif;font-size:clamp(54px,8.5vw,116px);font-weight:800;line-height:.9;letter-spacing:-4px;margin-bottom:28px;animation:fu .7s .08s ease both}
+h1.hero-h em{font-style:normal;color:transparent;-webkit-text-stroke:1px rgba(242,241,237,.25)}
+h1.hero-h .g{color:var(--green)}
 
-    /* BENEFITS */
-    .benefits-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
-    .benefit-card { background:#0A1828; border:1px solid #0D2540; border-radius:16px; padding:28px; transition:border-color .2s; }
-    .benefit-card:hover { border-color:#00C896; }
-    .benefit-icon { width:44px; height:44px; background:#0D2540; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:18px; }
-    .benefit-title { font-size:15px; font-weight:700; margin-bottom:10px; }
-    .benefit-body { font-size:13px; color:#6B8BA4; line-height:1.65; }
-    .benefit-val { font-size:24px; font-weight:900; color:#00C896; margin-top:16px; }
+.hero-sub{font-size:clamp(15px,1.8vw,19px);color:var(--gray);max-width:500px;line-height:1.65;margin-bottom:44px;font-weight:300;animation:fu .7s .16s ease both}
 
-    /* COMPARE */
-    .compare { background:#040C15; padding:80px 40px; border-top:1px solid #0D2540; border-bottom:1px solid #0D2540; }
-    .compare-inner { max-width:1100px; margin:0 auto; }
-    .compare-table { width:100%; border-collapse:collapse; margin-top:36px; }
-    .compare-table th { font-size:12px; color:#4A7A9B; font-weight:600; padding:12px 16px; text-align:left; border-bottom:1px solid #0D2540; letter-spacing:0.5px; }
-    .compare-table td { font-size:13px; padding:16px; border-bottom:1px solid #0A1828; color:#9BB5CC; }
-    .compare-table tr.highlight td { background:#0A1F14; color:#00C896; font-weight:700; }
-    .compare-table tr:not(.highlight):hover td { background:#0A1520; }
-    .badge-no { color:#C44040; font-weight:700; }
-    .badge-yes { color:#00C896; font-weight:700; font-size:16px; }
+.hero-actions{display:flex;gap:14px;align-items:center;animation:fu .7s .24s ease both}
+.btn-p{background:var(--green);color:#000;border:none;padding:15px 30px;border-radius:100px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:15px;cursor:none;transition:all .2s;text-decoration:none;display:inline-block}
+.btn-p:hover{background:#fff;transform:translateY(-2px)}
+.btn-g{color:var(--gray);font-size:13px;cursor:none;display:flex;align-items:center;gap:7px;text-decoration:none;transition:color .2s}
+.btn-g:hover{color:var(--white)}
+.btn-g svg{transition:transform .2s}
+.btn-g:hover svg{transform:translateX(4px)}
 
-    /* HOW IT WORKS */
-    .how { padding:80px 40px; max-width:1100px; margin:0 auto; }
-    .steps { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin-top:48px; }
-    .step { text-align:center; padding:28px 20px; background:#0A1828; border:1px solid #0D2540; border-radius:16px; }
-    .step-num { width:40px; height:40px; background:#00C896; color:#060F1A; font-size:16px; font-weight:900; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; }
-    .step-title { font-size:14px; font-weight:700; margin-bottom:8px; }
-    .step-body { font-size:12px; color:#6B8BA4; line-height:1.6; }
+.hero-stats{display:flex;gap:44px;margin-top:72px;padding-top:36px;border-top:1px solid var(--border);animation:fu .7s .32s ease both}
+.sn{font-family:'Syne',sans-serif;font-size:34px;font-weight:700;letter-spacing:-1px}
+.sn b{color:var(--green);font-weight:700}
+.sl{font-size:12px;color:var(--gray2);margin-top:3px}
 
-    /* CTA */
-    .cta-section { background:#00C896; padding:80px 40px; text-align:center; }
-    .cta-section h2 { font-size:38px; font-weight:900; color:#060F1A; letter-spacing:-1px; margin-bottom:14px; }
-    .cta-section p { font-size:16px; color:#03574A; margin-bottom:36px; max-width:500px; margin-left:auto; margin-right:auto; }
-    .cta-section .cta-btn { background:#060F1A; color:#00C896; font-size:15px; font-weight:700; padding:14px 40px; border-radius:10px; border:none; cursor:pointer; transition:opacity .15s; }
-    .cta-section .cta-btn:hover { opacity:0.85; }
-    .cta-note { font-size:12px; color:#0A7A60; margin-top:14px; }
+@keyframes fu{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
-    /* FOOTER */
-    .footer { background:#040C15; border-top:1px solid #0D2540; padding:32px 40px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
-    .footer-logo { font-size:18px; font-weight:900; color:#FFFFFF; }
-    .footer-logo span { color:#00C896; }
-    .footer-links { display:flex; gap:24px; }
-    .footer-links a { font-size:12px; color:#2A4A6A; text-decoration:none; }
-    .footer-links a:hover { color:#6B8BA4; }
-    .footer-txt { font-size:12px; color:#2A4A6A; }
+/* phone */
+.hero-phone{position:absolute;right:7%;top:50%;transform:translateY(-50%);animation:fp 6s ease-in-out infinite,fu 1s .4s ease both}
+@keyframes fp{0%,100%{transform:translateY(-50%) rotate(-1.5deg)}50%{transform:translateY(calc(-50% - 14px)) rotate(1.5deg)}}
+.phone{width:240px;background:#131814;border-radius:34px;padding:9px;border:1px solid rgba(255,255,255,0.09);position:relative}
+.phone::before{content:'';position:absolute;inset:-1px;border-radius:35px;background:linear-gradient(130deg,rgba(0,232,122,.25),transparent 55%);z-index:-1}
+.p-inner{background:#0c0e0c;border-radius:26px;overflow:hidden;padding:18px 14px 22px}
+.p-bar{display:flex;justify-content:space-between;font-size:9px;color:rgba(255,255,255,.25);margin-bottom:18px}
+.p-title{font-family:'Syne',sans-serif;font-size:12px;font-weight:600;color:rgba(255,255,255,.7);margin-bottom:18px}
+.p-amt{text-align:center;padding:14px 0 10px}
+.p-amt-l{font-size:9px;color:rgba(255,255,255,.28);margin-bottom:3px}
+.p-amt-n{font-family:'Syne',sans-serif;font-size:30px;font-weight:700;color:var(--white);letter-spacing:-1px}
+.p-kp{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:10px 0}
+.pk{background:rgba(255,255,255,.05);border-radius:7px;padding:9px 0;text-align:center;font-size:13px;font-weight:500;color:rgba(255,255,255,.6)}
+.p-btn{width:100%;padding:12px;background:var(--green);border:none;border-radius:10px;color:#000;font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;cursor:none}
+.p-glow{position:absolute;bottom:-50px;left:50%;transform:translateX(-50%);width:160px;height:50px;background:rgba(0,232,122,.18);filter:blur(28px);border-radius:50%;pointer-events:none}
 
-    /* RESPONSIVE */
-    @media (max-width: 800px) {
-      .hero { grid-template-columns:1fr; gap:40px; padding:48px 20px 40px; }
-      .hero h1 { font-size:34px; }
-      .benefits-grid { grid-template-columns:1fr 1fr; }
-      .steps { grid-template-columns:1fr 1fr; }
-      .nav-links { display:none; }
-      .strip { gap:20px; padding:14px 20px; }
-      .section, .how { padding:60px 20px; }
-      .compare { padding:60px 20px; }
-      .footer { flex-direction:column; text-align:center; padding:28px 20px; }
-    }
-    @media (max-width: 500px) {
-      .benefits-grid { grid-template-columns:1fr; }
-      .steps { grid-template-columns:1fr; }
-      .hc-stats { grid-template-columns:1fr 1fr 1fr; }
-    }
-  </style>
+/* REGULATION BAND */
+.reg-band{background:#0b0d0b;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:16px 48px;display:flex;align-items:center;gap:12px;font-size:12px;color:var(--gray2)}
+.reg-band strong{color:rgba(0,232,122,.8);font-weight:500}
+.reg-sep{color:var(--border);margin:0 6px}
+
+/* PROBLEMA */
+.sec{padding:110px 48px;position:relative}
+.sec-tag{font-size:11px;font-weight:500;color:var(--green);letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px}
+.sec-h{font-family:'Syne',sans-serif;font-size:clamp(34px,4.5vw,56px);font-weight:700;line-height:1.05;letter-spacing:-2px;margin-bottom:14px}
+.sec-sub{font-size:17px;color:var(--gray);max-width:460px;line-height:1.6;font-weight:300;margin-bottom:56px}
+
+.prob-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,.04);border-radius:18px;overflow:hidden}
+.prob-card{background:var(--card);padding:36px 32px;transition:background .3s;position:relative;overflow:hidden}
+.prob-card:hover{background:var(--card2)}
+.prob-icon{font-size:28px;margin-bottom:20px;display:block}
+.prob-card h3{font-family:'Syne',sans-serif;font-size:19px;font-weight:600;margin-bottom:10px;letter-spacing:-.3px}
+.prob-card p{font-size:13px;color:var(--gray);line-height:1.65}
+.prob-stat{display:inline-block;margin-top:18px;font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--green)}
+.prob-stat-l{font-size:11px;color:var(--gray2);margin-left:4px;font-family:'DM Sans',sans-serif;font-weight:300}
+
+/* SOLUCIÓN */
+.sol-sec{padding:110px 48px;background:#070908}
+.sol-flow{display:flex;align-items:center;justify-content:center;gap:0;margin:0 auto 64px;max-width:700px}
+.sol-node{flex:1;text-align:center;padding:28px 20px;background:var(--card);border:1px solid var(--border);border-radius:16px;transition:all .3s;cursor:none}
+.sol-node:hover{border-color:var(--green-border);background:var(--card2)}
+.sol-node-icon{font-size:24px;margin-bottom:10px;display:block}
+.sol-node-t{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;margin-bottom:4px}
+.sol-node-s{font-size:11px;color:var(--gray2)}
+.sol-arr{padding:0 12px;color:var(--green);font-size:20px;flex-shrink:0}
+.sol-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+.sol-m{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px 28px;text-align:center;transition:all .3s}
+.sol-m:hover{border-color:var(--green-border)}
+.sol-m-n{font-family:'Syne',sans-serif;font-size:44px;font-weight:800;color:var(--green);letter-spacing:-2px;line-height:1}
+.sol-m-l{font-size:13px;color:var(--gray);margin-top:8px}
+.sol-m-s{font-size:11px;color:var(--gray2);margin-top:4px}
+
+/* COMPETIDORES */
+.comp-sec{padding:110px 48px}
+.comp-table-wrap{overflow-x:auto;border-radius:16px;border:1px solid var(--border)}
+table.comp{width:100%;border-collapse:collapse;font-size:14px}
+table.comp th{background:#0b0d0b;padding:16px 20px;text-align:left;font-size:11px;font-weight:500;color:var(--gray2);letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid var(--border)}
+table.comp td{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--gray);vertical-align:middle}
+table.comp tr:last-child td{border-bottom:none}
+table.comp tr.highlight td{background:rgba(0,232,122,.04);color:var(--white);font-weight:500}
+table.comp tr.highlight td:first-child{color:var(--green)}
+.check{color:var(--green)}
+.cross{color:rgba(255,255,255,.2)}
+.comp-tag{display:inline-block;background:var(--green);color:#000;font-size:10px;font-weight:600;padding:2px 8px;border-radius:100px;margin-left:8px;letter-spacing:.04em;vertical-align:middle}
+
+/* ROADMAP */
+.road-sec{padding:110px 48px;background:#070908}
+.road-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,.04);border-radius:18px;overflow:hidden;margin-top:56px}
+.road-card{background:var(--card);padding:36px 32px}
+.road-phase{font-size:11px;font-weight:500;color:var(--green);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.road-period{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;letter-spacing:-.5px;margin-bottom:20px}
+.road-items{display:flex;flex-direction:column;gap:10px}
+.road-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--gray);line-height:1.5}
+.road-item::before{content:'→';color:var(--green);font-size:12px;margin-top:1px;flex-shrink:0}
+
+/* INVERSION */
+.inv-sec{padding:110px 48px}
+.inv-layout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.inv-bars{display:flex;flex-direction:column;gap:14px;margin-top:8px}
+.inv-bar-row{display:flex;align-items:center;gap:14px}
+.inv-bar-label{font-size:13px;color:var(--gray);min-width:220px}
+.inv-bar-track{flex:1;background:rgba(255,255,255,.06);border-radius:100px;height:8px;overflow:hidden}
+.inv-bar-fill{height:100%;border-radius:100px;background:var(--green);transition:width .8s ease}
+.inv-bar-val{font-size:12px;color:var(--green);font-weight:500;min-width:52px;text-align:right}
+.inv-goals{display:flex;flex-direction:column;gap:16px}
+.inv-goal{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 24px;transition:all .3s}
+.inv-goal:hover{border-color:var(--green-border)}
+.inv-goal-n{font-family:'Syne',sans-serif;font-size:32px;font-weight:700;color:var(--green);letter-spacing:-1px}
+.inv-goal-l{font-size:12px;color:var(--gray2);margin-top:4px}
+
+/* CTA */
+.cta-sec{padding:120px 48px;text-align:center;position:relative;overflow:hidden}
+.cta-sec::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 65% at 50% 50%,rgba(0,232,122,.055),transparent);pointer-events:none}
+.cta-sec h2{font-family:'Syne',sans-serif;font-size:clamp(42px,6.5vw,88px);font-weight:800;letter-spacing:-3px;line-height:.95;margin-bottom:22px}
+.cta-sec h2 em{font-style:normal;color:var(--green)}
+.cta-sec p{font-size:18px;color:var(--gray);margin-bottom:44px;font-weight:300}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.cta-note{margin-top:20px;font-size:12px;color:var(--gray2)}
+
+/* FOOTER */
+footer{padding:36px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.footer-left{display:flex;flex-direction:column;gap:4px}
+.footer-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:17px;color:var(--white);text-decoration:none}
+.footer-logo span{color:var(--green)}
+.footer-sub{font-size:11px;color:var(--gray2)}
+.footer-right{font-size:12px;color:var(--gray2);text-align:right}
+.footer-right a{color:var(--green);text-decoration:none}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+/* responsive */
+@media(max-width:900px){
+  nav{padding:14px 20px}
+  .nav-links{display:none}
+  .hero{padding:96px 20px 56px}
+  .hero-phone{display:none}
+  .hero h1{letter-spacing:-2px}
+  .hero-stats{gap:24px;flex-wrap:wrap}
+  .sec,.sol-sec,.comp-sec,.road-sec,.inv-sec,.cta-sec{padding:72px 20px}
+  .reg-band{padding:14px 20px;flex-wrap:wrap;gap:6px}
+  .prob-grid,.road-grid{grid-template-columns:1fr}
+  .sol-metrics{grid-template-columns:1fr}
+  .sol-flow{flex-direction:column;gap:8px}
+  .sol-arr{transform:rotate(90deg)}
+  .inv-layout{grid-template-columns:1fr}
+  footer{padding:28px 20px;flex-direction:column;text-align:center}
+  .footer-right{text-align:center}
+}
+</style>
 </head>
 <body>
 
+<div id="cur"></div>
+<div id="cur-r"></div>
+
 <!-- NAV -->
-<nav class="nav">
-  <a class="nav-logo" href="#">
-    <div class="logo-icon">
-      <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="1" y="7.5" width="13" height="3" rx="1.5" fill="#060F1A"/>
-        <polygon points="14,5 19,9 14,13" fill="#060F1A"/>
-        <rect x="6" y="13" width="13" height="3" rx="1.5" fill="#060F1A"/>
-        <polygon points="6,11 1,15 6,19" fill="#060F1A"/>
-      </svg>
-    </div>
-    <div class="logo-text">Pay<span>Direct</span></div>
-  </a>
-  <div class="nav-links">
-    <a href="#como-funciona">Cómo funciona</a>
-    <a href="#beneficios">Beneficios</a>
-    <a href="#comparativa">Precios</a>
-    <a href="#contacto">Contacto</a>
-  </div>
-  <button class="nav-cta" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">Empezar gratis →</button>
+<nav>
+  <a href="#" class="logo">Pay<span>Direct</span></a>
+  <ul class="nav-links">
+    <li><a href="#solucion">Solución</a></li>
+    <li><a href="#comparativa">Comparativa</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#inversion">Inversión</a></li>
+  </ul>
+  <a href="mailto:contacto@paydirect.cl" class="nav-pill">Quiero acceso</a>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div>
-    <div class="hero-badge">
-      <div class="hero-badge-dot"></div>
-      Regulado bajo Ley Fintech N°21.521
+  <div class="hero-glow"></div>
+  <div class="hero-grid"></div>
+
+  <div class="badge">
+    <span class="badge-dot"></span>
+    PSIP regulado CMF · Ley Fintech N°21.521
+  </div>
+
+  <h1 class="hero-h">
+    Cobra<br>
+    <em>sin</em><br>
+    <span class="g">Transbank</span>
+  </h1>
+
+  <p class="hero-sub">
+    Pagos A2A instantáneos para el comercio chileno.
+    Sin terminales, sin comisiones abusivas, sin esperar 48 horas.
+    Directo de la cuenta del cliente a la tuya.
+  </p>
+
+  <div class="hero-actions">
+    <a href="mailto:contacto@paydirect.cl" class="btn-p">Quiero acceso anticipado</a>
+    <a href="#solucion" class="btn-g">
+      Ver cómo funciona
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 7.5h10M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+
+  <div class="hero-stats">
+    <div>
+      <div class="sn">1.0<b>%</b></div>
+      <div class="sl">Comisión total — sin cargo fijo</div>
     </div>
-    <h1>Cobra sin <em>perder</em><br>en el camino</h1>
-    <p class="hero-sub">Pagos A2A instantáneos para tu comercio. Sin terminales, sin arriendo mensual, sin intermediarios innecesarios. El dinero va directo a tu cuenta.</p>
-    <div class="hero-btns">
-      <button class="btn-primary" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">Activa tu cuenta →</button>
-      <button class="btn-secondary" onclick="document.getElementById('como-funciona').scrollIntoView({behavior:'smooth'})">Ver cómo funciona</button>
+    <div>
+      <div class="sn"><b>&lt;</b>3<b>s</b></div>
+      <div class="sl">Confirmación en tiempo real</div>
+    </div>
+    <div>
+      <div class="sn">$<b>0</b></div>
+      <div class="sl">Sin arriendo de hardware</div>
+    </div>
+    <div>
+      <div class="sn">14<b>M</b></div>
+      <div class="sl">CuentaRUT activas en Chile</div>
     </div>
   </div>
-  <div class="hero-card">
-    <div class="hc-title">TRANSACCIÓN EN TIEMPO REAL</div>
-    <div class="hc-flow">
-      <div class="hc-node">
-        <div class="hc-node-label">Cliente</div>
-        <div class="hc-node-val">CuentaRUT</div>
+
+  <!-- phone -->
+  <div class="hero-phone">
+    <div class="phone">
+      <div class="p-inner">
+        <div class="p-bar"><span>9:41</span><span>▮▮▮</span></div>
+        <div class="p-title">Nuevo cobro</div>
+        <div class="p-amt">
+          <div class="p-amt-l">Monto a cobrar</div>
+          <div class="p-amt-n">$10.000</div>
+        </div>
+        <div class="p-kp">
+          <div class="pk">1</div><div class="pk">2</div><div class="pk">3</div>
+          <div class="pk">4</div><div class="pk">5</div><div class="pk">6</div>
+          <div class="pk">7</div><div class="pk">8</div><div class="pk">9</div>
+          <div class="pk">000</div><div class="pk">0</div><div class="pk">⌫</div>
+        </div>
+        <button class="p-btn">Generar cobro</button>
       </div>
-      <div class="hc-arrow">→</div>
-      <div class="hc-node accent">
-        <div class="hc-node-label">PayDirect</div>
-        <div class="hc-node-val">A2A</div>
-      </div>
-      <div class="hc-arrow">→</div>
-      <div class="hc-node">
-        <div class="hc-node-label">Tu cuenta</div>
-        <div class="hc-node-val">Banco</div>
-      </div>
-    </div>
-    <div class="hc-stats">
-      <div class="hc-stat">
-        <div class="hc-stat-val">1.0%</div>
-        <div class="hc-stat-lbl">Comisión total</div>
-      </div>
-      <div class="hc-stat">
-        <div class="hc-stat-val">&lt;3s</div>
-        <div class="hc-stat-lbl">Confirmación</div>
-      </div>
-      <div class="hc-stat">
-        <div class="hc-stat-val">$0</div>
-        <div class="hc-stat-lbl">Arriendo</div>
-      </div>
+      <div class="p-glow"></div>
     </div>
   </div>
 </section>
 
-<!-- BANKS STRIP -->
-<div class="strip">
-  <div class="strip-item"><div class="strip-dot"></div>BancoEstado</div>
-  <div class="strip-item"><div class="strip-dot"></div>Santander</div>
-  <div class="strip-item"><div class="strip-dot"></div>BCI</div>
-  <div class="strip-item"><div class="strip-dot"></div>Falabella</div>
-  <div class="strip-item"><div class="strip-dot"></div>Scotiabank</div>
-  <div class="strip-item"><div class="strip-dot"></div>Itaú</div>
-  <div class="strip-item"><div class="strip-dot"></div>BICE</div>
-  <div class="strip-item"><div class="strip-dot"></div>+ todos los bancos</div>
+<!-- REGULATION BAND -->
+<div class="reg-band">
+  <strong>Infraestructura regulada:</strong>
+  <span>Powered by Khipu (PSIP inscrito CMF)</span>
+  <span class="reg-sep">·</span>
+  <span>Sistema de Finanzas Abiertas</span>
+  <span class="reg-sep">·</span>
+  <span>Ley Fintech N°21.521</span>
+  <span class="reg-sep">·</span>
+  <span>ISO 20022 · FAPI 2.0</span>
+  <span class="reg-sep">·</span>
+  <span>AWS Santiago</span>
 </div>
 
-<!-- BENEFITS -->
-<section class="section" id="beneficios">
-  <div class="section-label">POR QUÉ PAYDIRECT</div>
-  <div class="section-title">Todo lo que necesitas.<br>Nada de lo que no.</div>
-  <div class="section-sub">Diseñado para el comercio chileno que quiere cobrar más y pagar menos en el proceso.</div>
-  <div class="benefits-grid">
-    <div class="benefit-card">
-      <div class="benefit-icon">⚡</div>
-      <div class="benefit-title">Instantáneo de verdad</div>
-      <div class="benefit-body">El dinero llega a tu cuenta en menos de 3 segundos. Sin esperar 24 o 48 horas hábiles como con Transbank.</div>
-      <div class="benefit-val">&lt; 3 seg</div>
+<!-- PROBLEMA -->
+<section class="sec">
+  <div class="sec-tag reveal">El problema</div>
+  <h2 class="sec-h reveal">El comercio paga<br>demasiado por cobrar.</h2>
+  <p class="sec-sub reveal">Entre comisiones, arriendo de terminal y liquidación lenta, el comercio minorista pierde entre 1.2% y 2.7% de cada venta.</p>
+
+  <div class="prob-grid">
+    <div class="prob-card reveal">
+      <span class="prob-icon">💸</span>
+      <h3>Comisiones altas</h3>
+      <p>Transbank cobra hasta 1.8% + cargo fijo en UF. Para tickets de $5.000, el costo impacta brutalmente el margen.</p>
+      <span class="prob-stat">~1.8%<span class="prob-stat-l">+ UF fija</span></span>
     </div>
-    <div class="benefit-card">
-      <div class="benefit-icon">💸</div>
-      <div class="benefit-title">Ahorra hasta 70%</div>
-      <div class="benefit-body">Sin tarifa fija en UF, sin arriendo de terminal, sin comisión de marca Visa o Mastercard. Solo 1% por transacción.</div>
-      <div class="benefit-val">-70% costo</div>
+    <div class="prob-card reveal">
+      <span class="prob-icon">⏱</span>
+      <h3>Liquidación lenta</h3>
+      <p>24 a 48 horas hábiles para recibir el dinero. El comercio financia al adquirente con su propio capital de trabajo.</p>
+      <span class="prob-stat">48h<span class="prob-stat-l">para recibir el dinero</span></span>
     </div>
-    <div class="benefit-card">
-      <div class="benefit-icon">📱</div>
-      <div class="benefit-title">Sin hardware</div>
-      <div class="benefit-body">Genera un QR desde tu celular o pantalla existente. El cliente paga desde su banco. Sin comprar ni arrendar nada.</div>
-      <div class="benefit-val">$0 equipos</div>
-    </div>
-    <div class="benefit-card">
-      <div class="benefit-icon">🏦</div>
-      <div class="benefit-title">Todos los bancos</div>
-      <div class="benefit-body">Compatible con CuentaRUT, cuentas corrientes, vistas y de ahorro de todos los bancos del sistema financiero chileno.</div>
-      <div class="benefit-val">14M+ usuarios</div>
-    </div>
-    <div class="benefit-card">
-      <div class="benefit-icon">🔐</div>
-      <div class="benefit-title">Regulado y seguro</div>
-      <div class="benefit-body">Operamos sobre Khipu, PSIP inscrito ante la CMF bajo la Ley Fintech N°21.521. FAPI 2.0 y mTLS en cada transacción.</div>
-      <div class="benefit-val">CMF ✓</div>
-    </div>
-    <div class="benefit-card">
-      <div class="benefit-icon">📊</div>
-      <div class="benefit-title">Dashboard en tiempo real</div>
-      <div class="benefit-body">Ve tus ventas, concilia automáticamente y cierra caja desde cualquier dispositivo. Sin Excel, sin hojas manuales.</div>
-      <div class="benefit-val">Todo en 1</div>
+    <div class="prob-card reveal">
+      <span class="prob-icon">🖥</span>
+      <h3>Arriendo de hardware</h3>
+      <p>Hasta $21.000 CLP/mes solo por el terminal POS, independiente de cuánto vendan. Un costo fijo inevitable.</p>
+      <span class="prob-stat">$21K<span class="prob-stat-l">CLP/mes solo el terminal</span></span>
     </div>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
-<section class="how" id="como-funciona">
-  <div class="section-label">CÓMO FUNCIONA</div>
-  <div class="section-title">Activo en 15 minutos.</div>
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">1</div>
-      <div class="step-title">Crea tu cuenta</div>
-      <div class="step-body">Solo necesitas tu RUT y cuenta bancaria. Sin papeles, sin visitas, sin esperas.</div>
+<!-- SOLUCIÓN -->
+<section class="sol-sec" id="solucion">
+  <div class="sec-tag reveal">La solución</div>
+  <h2 class="sec-h reveal">Directo de cuenta<br>a cuenta. <span style="color:var(--green)">Sin medio.</span></h2>
+  <p class="sec-sub reveal">PayDirect conecta al cliente con el comercio via transferencia bancaria directa, en menos de 3 segundos.</p>
+
+  <div class="sol-flow reveal">
+    <div class="sol-node">
+      <span class="sol-node-icon">👤</span>
+      <div class="sol-node-t">Cliente</div>
+      <div class="sol-node-s">Escanea QR o abre link</div>
     </div>
-    <div class="step">
-      <div class="step-num">2</div>
-      <div class="step-title">Genera tu QR</div>
-      <div class="step-body">Desde la app o web de PayDirect generas un QR dinámico por el monto exacto de cada venta.</div>
+    <div class="sol-arr">→</div>
+    <div class="sol-node">
+      <span class="sol-node-icon">⚡</span>
+      <div class="sol-node-t">PayDirect</div>
+      <div class="sol-node-s">Plataforma A2A</div>
     </div>
-    <div class="step">
-      <div class="step-num">3</div>
-      <div class="step-title">Cliente escanea</div>
-      <div class="step-body">El cliente escanea con su cámara o app bancaria y autoriza el pago desde su cuenta.</div>
+    <div class="sol-arr">→</div>
+    <div class="sol-node">
+      <span class="sol-node-icon">🏪</span>
+      <div class="sol-node-t">Comercio</div>
+      <div class="sol-node-s">Fondos instantáneos</div>
     </div>
-    <div class="step">
-      <div class="step-num">4</div>
-      <div class="step-title">Recibes al instante</div>
-      <div class="step-body">En menos de 3 segundos ves la confirmación y el dinero está en tu cuenta bancaria.</div>
+  </div>
+
+  <div class="sol-metrics">
+    <div class="sol-m reveal">
+      <div class="sol-m-n">0.69%</div>
+      <div class="sol-m-l">Costo para el comercio</div>
+      <div class="sol-m-s">vs 1.8% + UF de Transbank</div>
+    </div>
+    <div class="sol-m reveal">
+      <div class="sol-m-n">&lt; 3s</div>
+      <div class="sol-m-l">Confirmación en tiempo real</div>
+      <div class="sol-m-s">vs 24–48h de liquidación tradicional</div>
+    </div>
+    <div class="sol-m reveal">
+      <div class="sol-m-n">$0</div>
+      <div class="sol-m-l">Sin hardware, sin arriendo</div>
+      <div class="sol-m-s">Onboarding en 15 min con solo RUT + cuenta</div>
     </div>
   </div>
 </section>
 
-<!-- COMPARE -->
-<div class="compare" id="comparativa">
-  <div class="compare-inner">
-    <div class="section-label">COMPARATIVA</div>
-    <div class="section-title">El mercado no da muchas<br>opciones. Nosotros sí.</div>
-    <table class="compare-table">
+<!-- COMPARATIVA -->
+<section class="comp-sec" id="comparativa">
+  <div class="sec-tag reveal">Ventaja competitiva</div>
+  <h2 class="sec-h reveal">Precio, velocidad<br>y simplicidad.</h2>
+  <p class="sec-sub reveal">Comparativa directa con los actores actuales del mercado chileno.</p>
+
+  <div class="comp-table-wrap reveal">
+    <table class="comp">
       <thead>
         <tr>
           <th>Proveedor</th>
@@ -303,62 +397,203 @@
         <tr>
           <td>Transbank</td>
           <td>~1.8% + UF fija</td>
-          <td>$21.000/mes</td>
+          <td>$21.000 CLP</td>
           <td>24–48h</td>
-          <td class="badge-no">✗</td>
+          <td><span class="cross">✗</span></td>
         </tr>
         <tr>
           <td>Getnet</td>
           <td>1.04% + $30</td>
-          <td>$13.000/mes</td>
+          <td>$13.000 CLP</td>
           <td>1–5x día</td>
-          <td class="badge-no">✗</td>
+          <td><span class="cross">✗</span></td>
         </tr>
         <tr>
           <td>Mercado Pago</td>
           <td>2.19% + IVA</td>
-          <td>$0 (compra equipo)</td>
+          <td>$0*</td>
           <td>Instant / 10d</td>
-          <td class="badge-no">✗</td>
+          <td><span class="cross">✗</span></td>
         </tr>
         <tr>
           <td>Compraquí</td>
           <td>1.49% + IVA</td>
-          <td>$0 (compra equipo)</td>
+          <td>$0*</td>
           <td>Variable</td>
-          <td class="badge-no">✗</td>
+          <td><span class="cross">✗</span></td>
         </tr>
         <tr class="highlight">
-          <td>PayDirect ✦</td>
-          <td>1.0% + IVA</td>
+          <td>PayDirect <span class="comp-tag">NUEVO</span></td>
+          <td>1.0–1.2% + IVA</td>
           <td>$0 — sin equipo</td>
           <td>Instantánea</td>
-          <td class="badge-yes">✓</td>
+          <td><span class="check">✓</span></td>
         </tr>
       </tbody>
     </table>
   </div>
-</div>
+  <p style="font-size:11px;color:var(--gray2);margin-top:12px">* Requiere compra de equipo (costo único)</p>
+</section>
+
+<!-- ROADMAP -->
+<section class="road-sec" id="roadmap">
+  <div class="sec-tag reveal">Hoja de ruta</div>
+  <h2 class="sec-h reveal">De piloto a plataforma<br>en 18 meses.</h2>
+  <p class="sec-sub reveal">Crecimiento modular, capital eficiente, regulación por etapas.</p>
+
+  <div class="road-grid">
+    <div class="road-card reveal">
+      <div class="road-phase">Fase 1</div>
+      <div class="road-period">Q1–Q2 2026<br><span style="font-size:15px;color:var(--gray)">MVP + Piloto</span></div>
+      <div class="road-items">
+        <div class="road-item">Integración API Khipu</div>
+        <div class="road-item">App web para cajero (QR + confirmación)</div>
+        <div class="road-item">Piloto con 10 comercios aliados</div>
+        <div class="road-item">Validar conversión y NPS</div>
+      </div>
+    </div>
+    <div class="road-card reveal">
+      <div class="road-phase">Fase 2</div>
+      <div class="road-period">Q3–Q4 2026<br><span style="font-size:15px;color:var(--gray)">Comercialización</span></div>
+      <div class="road-items">
+        <div class="road-item">Fuerza de venta directa</div>
+        <div class="road-item">100 comercios activos</div>
+        <div class="road-item">Dashboard + reportería SaaS</div>
+        <div class="road-item">Primer fee cobrado</div>
+      </div>
+    </div>
+    <div class="road-card reveal">
+      <div class="road-phase">Fase 3</div>
+      <div class="road-period">2027<br><span style="font-size:15px;color:var(--gray)">Escala + PSIP</span></div>
+      <div class="road-items">
+        <div class="road-item">500+ comercios activos</div>
+        <div class="road-item">Integrar Shinkansen (payouts B2B)</div>
+        <div class="road-item">Inicio trámite licencia PSIP CMF</div>
+        <div class="road-item">Ronda de inversión Serie A</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INVERSIÓN -->
+<section class="inv-sec" id="inversion">
+  <div class="sec-tag reveal">Inversión</div>
+  <h2 class="sec-h reveal">Ronda Seed<br><span style="color:var(--green)">USD $250.000</span></h2>
+  <p class="sec-sub reveal">Capital eficiente con camino claro a la rentabilidad en menos de 18 meses.</p>
+
+  <div class="inv-layout">
+    <div>
+      <p style="font-size:13px;color:var(--gray2);margin-bottom:20px;text-transform:uppercase;letter-spacing:.08em;font-size:11px;font-weight:500">Uso de fondos</p>
+      <div class="inv-bars reveal">
+        <div class="inv-bar-row">
+          <span class="inv-bar-label">Desarrollo tecnológico</span>
+          <div class="inv-bar-track"><div class="inv-bar-fill" style="width:35%"></div></div>
+          <span class="inv-bar-val">35% · $87.5K</span>
+        </div>
+        <div class="inv-bar-row">
+          <span class="inv-bar-label">Comercialización y ventas</span>
+          <div class="inv-bar-track"><div class="inv-bar-fill" style="width:25%"></div></div>
+          <span class="inv-bar-val">25% · $62.5K</span>
+        </div>
+        <div class="inv-bar-row">
+          <span class="inv-bar-label">Operaciones + equipo</span>
+          <div class="inv-bar-track"><div class="inv-bar-fill" style="width:20%"></div></div>
+          <span class="inv-bar-val">20% · $50K</span>
+        </div>
+        <div class="inv-bar-row">
+          <span class="inv-bar-label">Asesoría legal + regulatoria</span>
+          <div class="inv-bar-track"><div class="inv-bar-fill" style="width:15%"></div></div>
+          <span class="inv-bar-val">15% · $37.5K</span>
+        </div>
+        <div class="inv-bar-row">
+          <span class="inv-bar-label">Capital de reserva</span>
+          <div class="inv-bar-track"><div class="inv-bar-fill" style="width:5%"></div></div>
+          <span class="inv-bar-val">5% · $12.5K</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p style="font-size:11px;color:var(--gray2);margin-bottom:20px;text-transform:uppercase;letter-spacing:.08em;font-weight:500">Objetivos al cerrar seed</p>
+      <div class="inv-goals">
+        <div class="inv-goal reveal">
+          <div class="inv-goal-n">100</div>
+          <div class="inv-goal-l">comercios activos</div>
+        </div>
+        <div class="inv-goal reveal">
+          <div class="inv-goal-n">$750M</div>
+          <div class="inv-goal-l">CLP volumen mensual</div>
+        </div>
+        <div class="inv-goal reveal">
+          <div class="inv-goal-n">$2.25M</div>
+          <div class="inv-goal-l">CLP ingreso mensual</div>
+        </div>
+        <div class="inv-goal reveal">
+          <div class="inv-goal-n">&lt;18m</div>
+          <div class="inv-goal-l">al punto de equilibrio</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- CTA -->
-<section class="cta-section" id="contacto">
-  <h2>¿Listo para cobrar diferente?</h2>
-  <p>Activa tu cuenta en 15 minutos. Solo necesitas tu RUT y cuenta bancaria.</p>
-  <button class="cta-btn">Empezar ahora — es gratis →</button>
-  <p class="cta-note">Sin contrato de permanencia · Sin costo de instalación · Cancelación en cualquier momento</p>
+<section class="cta-sec">
+  <h2>La oportunidad<br>es <em>ahora.</em></h2>
+  <p>Chile tiene 14M de personas con cuenta bancaria y un ecosistema regulatorio listo.<br>El comercio paga demasiado por cobrar. PayDirect cambia eso.</p>
+  <div class="cta-btns">
+    <a href="mailto:contacto@paydirect.cl" class="btn-p">Quiero acceso anticipado</a>
+    <a href="mailto:contacto@paydirect.cl" class="btn-g">
+      Hablar con el equipo
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 7.5h10M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+  <p class="cta-note">Sin contratos · Sin mensualidad mínima · Onboarding en 15 minutos</p>
 </section>
 
 <!-- FOOTER -->
-<footer class="footer">
-  <div class="footer-logo">Pay<span>Direct</span></div>
-  <div class="footer-links">
-    <a href="#">Términos y condiciones</a>
-    <a href="#">Privacidad</a>
-    <a href="#">Docs API</a>
-    <a href="#">Contacto</a>
+<footer>
+  <div class="footer-left">
+    <a href="#" class="footer-logo">Pay<span>Direct</span></a>
+    <span class="footer-sub">PayDirect SpA · Santiago, Chile · PSIP regulado CMF</span>
   </div>
-  <div class="footer-txt">© 2026 PayDirect SpA · Santiago, Chile · Regulado por CMF</div>
+  <div class="footer-right">
+    <a href="mailto:contacto@paydirect.cl">contacto@paydirect.cl</a><br>
+    <span style="margin-top:4px;display:block">© 2026 PayDirect · CONFIDENCIAL</span>
+  </div>
 </footer>
 
+<script>
+// cursor
+const cur=document.getElementById('cur'),cr=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx-4.5+'px';cur.style.top=my-4.5+'px';
+});
+(function anim(){
+  rx+=(mx-rx-17)*.11;ry+=(my-ry-17)*.11;
+  cr.style.left=rx+'px';cr.style.top=ry+'px';
+  requestAnimationFrame(anim);
+})();
+document.querySelectorAll('a,button,.sol-node,.prob-card,.road-card,.inv-goal,.sol-m').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    cur.style.transform='scale(2.8)';
+    cr.style.transform='scale(1.5)';
+    cr.style.borderColor='rgba(0,232,122,.7)';
+  });
+  el.addEventListener('mouseleave',()=>{
+    cur.style.transform='scale(1)';
+    cr.style.transform='scale(1)';
+    cr.style.borderColor='rgba(0,232,122,.35)';
+  });
+});
+
+// scroll reveal
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')});
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
 </body>
 </html>
